@@ -45,9 +45,6 @@ func (opt *Option) Validate() error {
 type Client struct {
 	mqc mq_http_sdk.MQClient
 	opt *Option
-
-	messageTag string
-	properties map[string]string
 }
 
 func NewClient(opt *Option) *Client {
