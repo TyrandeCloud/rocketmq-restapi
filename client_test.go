@@ -8,29 +8,28 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func mockClient(t *testing.T) *Client {
+func mockClient(t *testing.T, namespace string) *Client {
 	opt, err := GetOptionFromEnv()
 	assert.NoError(t, err)
 	if err != nil {
 		panic(err)
 	}
-	return NewClient(opt)
+	return NewClient(opt, namespace)
 }
 
 func TestClient(t *testing.T) {
-	client := mockClient(t)
+	client := mockClient(t, "unit-test")
 
 	tag := "TestClient"
 
 	var msg mq_http_sdk.PublishMessageRequest
 	msg = mq_http_sdk.PublishMessageRequest{
 		MessageBody: "hello mq!",
-		MessageTag:  tag,
 		Properties: map[string]string{
 			"pid": "123",
 		},
 	}
-	ret, err := client.Producer().PublishMessage(msg)
+	ret, err := client.Publish(tag, msg)
 	assert.NoError(t, err)
 	if err == nil {
 		fmt.Printf("Publish ---->\n\tMessageId:%s, BodyMD5:%s, \n", ret.MessageId, ret.MessageBodyMD5)
