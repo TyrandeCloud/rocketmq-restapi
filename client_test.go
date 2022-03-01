@@ -3,6 +3,7 @@ package rocketmq_restapi
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	mq_http_sdk "github.com/aliyunmq/mq-http-go-sdk"
 	"github.com/stretchr/testify/assert"
@@ -29,7 +30,9 @@ func TestClient(t *testing.T) {
 			"pid": "123",
 		},
 	}
+	t1 := time.Now()
 	ret, err := client.Publish(tag, msg)
+	fmt.Printf("used in ms:%d\n", time.Now().Sub(t1).Milliseconds())
 	assert.NoError(t, err)
 	if err == nil {
 		fmt.Printf("Publish ---->\n\tMessageId:%s, BodyMD5:%s, \n", ret.MessageId, ret.MessageBodyMD5)
